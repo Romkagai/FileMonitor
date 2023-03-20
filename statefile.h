@@ -1,34 +1,30 @@
 #include <QString>
 #include <QFileInfo>
-#include <QSet>
-
 #ifndef STATEFILE_H
 #define STATEFILE_H
-
-#include <QString>
 
 class StateFile : public QObject
 {
     Q_OBJECT
 
 public:
-    StateFile(const QString& filename);
-    void updateState(); //нужно ли явно описать как слот для удобства чтения? если описывать как слот обязательно ли добавлять public?
-    QString getFileName() const;
-    qint64 getSize() const;
-    bool getExistStatus() const;
+    StateFile(const QString& filename); //Конструктор
+    QString getFileName() const;        //Геттер для имени
+    qint64  getSize() const;            //Геттер для размера
+    bool    getExistStatus() const;     //Геттер для статуса существования
 
+public slots:
+    void updateState();                 //Слот на обновление информации о файле
 
 signals:
-    void fileCreated(); //Если файл создали
-    void fileChanged(); //Если файл изменили
-    void fileRemoved(); //Если файл удалили
-    void fileStable();  //Если с файлом все в порядке
+    void fileCreated(const QString &m_fileName, qint64 m_Size);     //Если файл создали
+    void fileChanged(const QString &m_fileName, qint64 m_Size);     //Если файл изменили
+    void fileDeleted(const QString &m_fileName);                    //Если файл удалили
 
 private:
-    QString m_fileName;
-    qint64  m_Size;
-    bool    m_isExist;
+    QString m_fileName;     //Имя файла
+    qint64  m_Size;         //Размер файла
+    bool    m_isExist;      //Статус существования
 };
 
 #endif

@@ -1,7 +1,5 @@
 #ifndef FILEMONITOR_H
 #define FILEMONITOR_H
-
-#include <QSet>
 #include "statefile.h"
 
 class FileMonitor : public QObject
@@ -9,25 +7,26 @@ class FileMonitor : public QObject
     Q_OBJECT
 
 public:
-    FileMonitor(QObject* parent = nullptr);
-    ~FileMonitor();
+    FileMonitor(QObject* parent = nullptr); //Конструктор
+    ~FileMonitor();                         //Деструктор
 
-    //функции пока что войды - надо будет переделать под бул, продумать условия наличия/отсутствия файлов
-    void addFile(StateFile *filename); //вернет false если файл не получится добавить (уже присутствует)
-    void deleteFile(StateFile *filename); //вернет false если файл не получится удалить (отсутствует изначально)
+    //Функции добавления и удаления типа void потому что файл (его имя)
+    //мы в любом случае можем добавить под наблюдение, но
+    //будем отображать факт существования файла при его добавлении в монитор
 
-    const QList<StateFile*> &getAllFiles() const;
+    void addFile(StateFile *filename);              //Добавляем файл в QList
+    void deleteFile(StateFile *filename);           //Удаляем файл из QList
+    const QList<StateFile*> &getAllFiles() const;   //Геттер для всех файлов
 
-    //обновляем данные по файлам
+public slots:
     void UpdateStates();
 
 signals:
-    void MonitorFileCreated(const QString& filename, qint64 size);
-    void MonitorFileChanged(const QString& filename, qint64 size);
-    void MonitorFileRemoved(const QString& filename);
+    void fileAddedToMonitor(StateFile *file);       //Посылаем сигнал, когда файл добавлен под наблюдение
+    void fileDeletedFromMonitor(StateFile *file);   //Посылаем сигнал, когда файл удален из под наблюдения
 
 private:
-    QList<StateFile*> m_files;
+    QList<StateFile*> m_files;  //Список файлов
 };
 
-#endif // FILEMONITOR_H
+#endif
