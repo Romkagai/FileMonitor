@@ -1,7 +1,9 @@
 #include <QString>
 #include <QFileInfo>
+
 #ifndef STATEFILE_H
 #define STATEFILE_H
+
 
 class StateFile : public QObject
 {

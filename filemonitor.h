@@ -14,8 +14,8 @@ public:
     //мы в любом случае можем добавить под наблюдение, но
     //будем отображать факт существования файла при его добавлении в монитор
 
-    void addFile(StateFile *filename);              //Добавляем файл в QList
-    void deleteFile(StateFile *filename);           //Удаляем файл из QList
+    bool addFile(const QString & filename);              //Добавляем файл в QList
+    bool deleteFile(const QString &filename);           //Удаляем файл из QList
     const QList<StateFile*> &getAllFiles() const;   //Геттер для всех файлов
 
 public slots:

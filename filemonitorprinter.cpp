@@ -1,9 +1,10 @@
 #include "filemonitorprinter.h"
 
+
 //При добавлении файла в монитор будем прописывать сообщение и коннекты для него
 void FileMonitorPrinter::OnFileAddedToMonitor(StateFile *file)
 {
-    qDebug() << "Файл:" << file->getFileName() << "был добавлен под наблюдение, его размер: " << file->getSize();
+    qDebug << "Файл:" << file->getFileName() << "был добавлен под наблюдение, его размер: " << file->getSize();
     qDebug() << "Файл существует?" << file->getExistStatus() << Qt::endl;
     connect(file, &StateFile::fileChanged, this, &FileMonitorPrinter::OnFileChanged);
     connect(file, &StateFile::fileCreated, this, &FileMonitorPrinter::OnFileCreated);
