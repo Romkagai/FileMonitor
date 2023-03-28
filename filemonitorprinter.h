@@ -1,7 +1,9 @@
 #ifndef FILEMONITORPRINTER_H
 #define FILEMONITORPRINTER_H
-#include <QDebug>
 #include "filemonitor.h"
+#include <iostream>
+
+using namespace std;
 
 class FileMonitorPrinter : public QObject
 {

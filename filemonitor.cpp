@@ -13,30 +13,42 @@ FileMonitor::~FileMonitor() //Деструктор
     m_files.clear();
 }
 
-void FileMonitor::addFile(StateFile *filename)
+bool FileMonitor::addFile(const QString & filename)
 {
-    m_files.append(filename);               //Добавляем файл
-    emit fileAddedToMonitor(filename);      //Посылаем сигнал о создании файла
+    StateFile *newFile = new StateFile(filename);
+    if (m_files.contains(newFile)){
+        return false;
+    }
+
+    m_files.append(newFile);               //Добавляем файл
+    emit fileAddedToMonitor(newFile);      //Посылаем сигнал о создании файла
+    return true;
 }
 
-void FileMonitor::deleteFile(StateFile *filename)
+bool FileMonitor::deleteFile(const QString & filename)
 {
-    m_files.removeOne(filename);            //Удаляем файл
-    emit fileDeletedFromMonitor(filename);  //Посылаем сигнал об удалении файла
-    delete filename;
+    StateFile *oldFile = new StateFile(filename);
+
+    if (m_files.contains(oldFile)){
+        m_files.removeOne(oldFile);
+        emit fileDeletedFromMonitor(oldFile);
+        return true;
+    }
+    return false;
 }
 
-const QList<StateFile *> &FileMonitor::getAllFiles() const
+QList<StateFile*> FileMonitor::getAllFiles()
 {
     return m_files;                         //Геттер на список файлов
 }
 
-void FileMonitor::UpdateStates()
+void FileMonitor::updateStates()
 {
     for (int i = 0; i < m_files.size(); ++i) {      //Для каждого файла
         m_files[i]->updateState();                  //Обновляем статус
     }
 }
+
 
 
 
