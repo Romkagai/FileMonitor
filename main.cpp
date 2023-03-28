@@ -14,8 +14,6 @@ int main(int argc, char* argv[])
 {
    QCoreApplication app(argc, argv);
 
-   cout << "privet";
-
    //StateFile *TestFile1 = new StateFile("/Users/ludoviksoso/TestFileFolder/A.rtf");
    //StateFile *TestFile2 = new StateFile("/Users/ludoviksoso/TestFileFolder/B.rtf");
    //StateFile *TestFile3 = new StateFile("/Users/ludoviksoso/TestFileFolder/C.rtf");
@@ -35,7 +33,7 @@ int main(int argc, char* argv[])
    QTimer timer;                    //Создаем объект Timer
    timer.setInterval(500);         //Обновляем каждые 5 секунд
 
-   QObject::connect(&timer, &QTimer::timeout, &TestMonitor, &FileMonitor::UpdateStates); //Соединяем таймер и монитор
+   QObject::connect(&timer, &QTimer::timeout, &TestMonitor, &FileMonitor::updateStates); //Соединяем таймер и монитор
 
    timer.start();   //Запускаем таймер
 

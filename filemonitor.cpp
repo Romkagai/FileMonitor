@@ -16,7 +16,6 @@ FileMonitor::~FileMonitor() //Деструктор
 bool FileMonitor::addFile(const QString & filename)
 {
     StateFile *newFile = new StateFile(filename);
-
     if (m_files.contains(newFile)){
         return false;
     }
@@ -35,21 +34,21 @@ bool FileMonitor::deleteFile(const QString & filename)
         emit fileDeletedFromMonitor(oldFile);
         return true;
     }
-
     return false;
 }
 
-const QList<StateFile *> &FileMonitor::getAllFiles() const
+QList<StateFile*> FileMonitor::getAllFiles()
 {
     return m_files;                         //Геттер на список файлов
 }
 
-void FileMonitor::UpdateStates()
+void FileMonitor::updateStates()
 {
     for (int i = 0; i < m_files.size(); ++i) {      //Для каждого файла
         m_files[i]->updateState();                  //Обновляем статус
     }
 }
+
 
 
 
