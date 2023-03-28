@@ -1,27 +1,25 @@
 #include <QString>
 #include <QFileInfo>
+#include <QFile>
 
 #ifndef STATEFILE_H
 #define STATEFILE_H
-
 
 class StateFile : public QObject
 {
     Q_OBJECT
 
 public:
-    StateFile(const QString& filename); //Конструктор
-    QString getFileName() const;        //Геттер для имени
-    qint64  getSize() const;            //Геттер для размера
-    bool    getExistStatus() const;     //Геттер для статуса существования
+    StateFile(const QString& filename);     //Конструктор
+    QString getFileName() ;                 //Геттер для имени
+    qint64  getSize() ;                     //Геттер для размера
+    bool    getExistStatus();               //Геттер для статуса существования
 
-public slots:
-    void updateState();                 //Слот на обновление информации о файле
+    int updateState();                              //Функция на обновление информации о файле
 
-signals:
-    void fileCreated(const QString &m_fileName, qint64 m_Size);     //Если файл создали
-    void fileChanged(const QString &m_fileName, qint64 m_Size);     //Если файл изменили
-    void fileDeleted(const QString &m_fileName);                    //Если файл удалили
+    StateFile(const StateFile& temp);               //Перегрузка оператора копирования
+    StateFile& operator =(const StateFile& temp);   //Перегрузка оператора присваивания
+    bool operator==(const StateFile& temp) const;   //Перегрузка оператора сравнения
 
 private:
     QString m_fileName;     //Имя файла
