@@ -1,54 +1,50 @@
 #include "filemonitor.h"
 
-FileMonitor::FileMonitor(QObject* parent) //Конструктор
-    : QObject(parent)
+FileMonitor::FileMonitor()
 {
+    QTimer* timer = new QTimer(this);                                       //Будем объявлять таймер сразу при создании
+    connect(timer, &QTimer::timeout, this, &FileMonitor::updateStates);     //Монитора
+    timer->start();
 }
 
-FileMonitor::~FileMonitor() //Деструктор
+bool FileMonitor::addFile(const QString & filename)     //Добавление файла в монитор
 {
-    for (int i = 0; i < m_files.size(); ++i){
-        delete m_files[i];
+    StateFile newFile(filename);            //Создаем новый файл
+    if (m_files.contains(newFile)){         //Если он уже есть в списке
+        return false;                       //Ничего не делаем
     }
-    m_files.clear();
-}
-
-bool FileMonitor::addFile(const QString & filename)
-{
-    StateFile *newFile = new StateFile(filename);
-    if (m_files.contains(newFile)){
-        return false;
-    }
-
-    m_files.append(newFile);               //Добавляем файл
-    emit fileAddedToMonitor(newFile);      //Посылаем сигнал о создании файла
+    m_files.append(newFile);                //Иначе добавляем файл
+    emit fileAddedToMonitor(newFile);       //Посылаем сигнал о добавлении файла
     return true;
 }
 
-bool FileMonitor::deleteFile(const QString & filename)
+bool FileMonitor::deleteFile(const QString & filename) //Удаление файла из монитора
 {
-    StateFile *oldFile = new StateFile(filename);
-
-    if (m_files.contains(oldFile)){
-        m_files.removeOne(oldFile);
-        emit fileDeletedFromMonitor(oldFile);
+    StateFile oldFile(filename);                //Создаем файл для проверки
+    if (m_files.contains(oldFile)){             //Если он есть в списке
+        m_files.removeOne(oldFile);             //То удаляем его
+        emit fileDeletedFromMonitor(oldFile);   //Посылаем сигнал об удалении файла из монитора
         return true;
     }
-    return false;
+    return false;                               //Если его нет, то и удалять нечего
 }
 
-QList<StateFile*> FileMonitor::getAllFiles()
-{
-    return m_files;                         //Геттер на список файлов
-}
-
-void FileMonitor::updateStates()
+void FileMonitor::updateStates() //Функция на обновление всех файлов
 {
     for (int i = 0; i < m_files.size(); ++i) {      //Для каждого файла
-        m_files[i]->updateState();                  //Обновляем статус
+        switch (m_files[i].updateState())           //Проверяем данные о нем
+        {
+        case 0:                                     //Ничего не изменилось - ничего не делаем
+            break;
+        case 1:
+            emit fileCreated(m_files[i].getFileName(), m_files[i].getSize());   //Файл создан - см. StateFile.cpp
+            break;
+        case 2:
+           emit fileChanged(m_files[i].getFileName(), m_files[i].getSize());    //Файл изменен - см. StateFile.cpp
+           break;
+        case 3:
+           emit fileDeleted(m_files[i].getFileName());                          //Файл удален - см. StateFile.cpp
+           break;
+        };
     }
 }
-
-
-
-
