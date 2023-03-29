@@ -2,9 +2,6 @@
 
 FileMonitor::FileMonitor()
 {
-    QTimer* timer = new QTimer(this);                                       //Будем объявлять таймер сразу при создании
-    connect(timer, &QTimer::timeout, this, &FileMonitor::updateStates);     //Монитора
-    timer->start();
 }
 
 bool FileMonitor::addFile(const QString & filename)     //Добавление файла в монитор
