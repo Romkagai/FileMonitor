@@ -4,7 +4,7 @@ FileMonitor::FileMonitor()
 {
     QTimer* timer = new QTimer(this);                                       //Будем объявлять таймер сразу при создании
     connect(timer, &QTimer::timeout, this, &FileMonitor::updateStates);     //Монитора
-    timer->start();
+    timer->start(10);
 }
 
 bool FileMonitor::addFile(const QString & filename)     //Добавление файла в монитор
@@ -27,6 +27,12 @@ bool FileMonitor::deleteFile(const QString & filename) //Удаление фай
         return true;
     }
     return false;                               //Если его нет, то и удалять нечего
+}
+
+FileMonitor &FileMonitor::Instance()
+{
+    static FileMonitor obj;
+    return obj;
 }
 
 void FileMonitor::updateStates() //Функция на обновление всех файлов

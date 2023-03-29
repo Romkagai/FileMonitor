@@ -10,8 +10,8 @@ int main(int argc, char* argv[])
 {
    QCoreApplication app(argc, argv);
 
-   FileMonitor TestMonitor;                     //Создаем монитор, автоматически инициализирующий таймер
-   FileMonitorPrinter TestPrinter(TestMonitor); //Создаем для него принтер
+   FileMonitor &TestMonitor = FileMonitor::Instance();               //Создаем монитор, автоматически инициализирующий таймер
+   FileMonitorPrinter TestPrinter(TestMonitor);                     //Создаем для него принтер
 
    TestMonitor.addFile("E:\A.txt");                                 //Добавляем в монитор файлы.
    TestMonitor.addFile("E:\A.txt");                                 //Добавим такой же файл (проверим повторное добавление)

@@ -8,9 +8,10 @@ class FileMonitor : public QObject
     Q_OBJECT
 
 public:
-    FileMonitor();
     bool addFile(const QString &filename);              //Добавляем файл в QList
     bool deleteFile(const QString &filename);           //Удаляем файл из QList
+
+    static FileMonitor &Instance();                     //Реализуем паттерн Singleton
 
 public slots:
     void updateStates();                                //Функция для обновления всех файлов
@@ -24,6 +25,11 @@ signals:
 
 private:
     QList<StateFile> m_files;  //Список файлов
+
+    FileMonitor();
+    ~FileMonitor() {}
+    FileMonitor(FileMonitor const&);
+    FileMonitor &operator = (FileMonitor const&);
 };
 
 #endif
