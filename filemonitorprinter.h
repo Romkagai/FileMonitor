@@ -10,7 +10,7 @@ class FileMonitorPrinter : public QObject
     Q_OBJECT
 
 public:
-    FileMonitorPrinter(FileMonitor &monitor) : m_monitor(monitor)
+    FileMonitorPrinter(FileMonitor &m_monitor)
     {
         //Соединяем сигналы и слоты для обработки сигналов об удалении/добавлении файлов в монитор
         connect(&m_monitor, &FileMonitor::fileAddedToMonitor, this, &FileMonitorPrinter::OnFileAddedToMonitor);
@@ -27,8 +27,6 @@ public slots:
     void OnFileCreated(const QString &file_name, qint64 file_size); //При физическом создании файла
     void OnFileDeleted(const QString &file_name);                   //При удалении файла
 
-private:
-    FileMonitor& m_monitor; //Монитор для принтера
 };
 
 #endif
