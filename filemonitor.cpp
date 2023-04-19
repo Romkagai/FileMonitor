@@ -26,6 +26,12 @@ bool FileMonitor::deleteFile(const QString & filename) //Удаление фай
     return false;                               //Если его нет, то и удалять нечего
 }
 
+FileMonitor &FileMonitor::Instance()
+{
+    static FileMonitor obj;
+    return obj;
+}
+
 void FileMonitor::updateStates() //Функция на обновление всех файлов
 {
     for (int i = 0; i < m_files.size(); ++i) {      //Для каждого файла
