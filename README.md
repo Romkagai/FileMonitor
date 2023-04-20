@@ -26,5 +26,6 @@
 Дополнительно реализван паттерн Singleton, таким образом может существовать только лишь 1 объект класса FileMonitor.
 
 UML-диаграмма классов данного проекта принимает следующий вид: 
-![lab1](https://user-images.githubusercontent.com/106104315/233300057-8779d054-327a-4f14-9bd4-27af056a4d96.png)
+![lab1 (1)](https://user-images.githubusercontent.com/106104315/233305401-16b400a7-949d-40fe-98be-37bf26175cbe.png)
+
 
